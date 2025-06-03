@@ -1,0 +1,446 @@
+{
+	"info": {
+		"_postman_id": "e990dc07-6bd7-431e-96d7-7d6e65a6a1d4",
+		"name": "Fitness Studio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39810980",
+		"_collection_link": "https://www.postman.com/cryosat-administrator-93474914/workspace/fitness-studio/collection/39810980-e990dc07-6bd7-431e-96d7-7d6e65a6a1d4?action=share&source=collection_link&creator=39810980"
+	},
+	"item": [
+		{
+			"name": "View Classes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"description": "StartFragmentReturns a list of all upcoming fitness classes.EndFragment"
+			},
+			"response": [
+				{
+					"name": "Classes List - Success (200)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/classes/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"classes",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "[\r\n  {\r\n    \"id\": 1,\r\n    \"name\": \"Yoga for Beginners\",\r\n    \"date\": \"2025-06-05T08:00:00\",\r\n    \"instructor\": \"Alice Smith\",\r\n    \"available_slots\": 5\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"name\": \"HIIT Training\",\r\n    \"date\": \"2025-06-06T10:00:00\",\r\n    \"instructor\": \"Bob Johnson\",\r\n    \"available_slots\": 2\r\n  }\r\n]\r\n"
+				},
+				{
+					"name": "Classes List - Error (500)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/classes/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"classes",
+								""
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"Unable to fetch classes\"\r\n}\r\n"
+				},
+				{
+					"name": "No Classes- Error(404)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/classes/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"classes",
+								""
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"No upcoming classes available\"\r\n}\r\n"
+				}
+			]
+		},
+		{
+			"name": "Book a Class",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/book/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"book",
+						""
+					]
+				},
+				"description": "StartFragmentAccepts a booking request with class ID, client name, and email.  \n  \nValidates that slots are available and decreases the count if booking is successful.EndFragment"
+			},
+			"response": [
+				{
+					"name": "No slots - Error(400)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/book/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"book",
+								""
+							]
+						}
+					},
+					"code": 400,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"No available slots for this class\"\r\n}\r\n"
+				},
+				{
+					"name": "Book a Class-Success(201)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/book/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"book",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 03 Jun 2025 10:49:15 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.12.6"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "31"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": \"Booking Confirmed\"\n}"
+				},
+				{
+					"name": "Missing fields - Error(400)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/book/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"book",
+								""
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"Missing required fields\"\r\n}\r\n"
+				},
+				{
+					"name": "Invalid class ID - error(404)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/book/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"book",
+								""
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"Invalid class ID\"\r\n}\r\n"
+				},
+				{
+					"name": "Server error - Error(500)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"class_id\": 2,\r\n  \"client_name\": \"Jane Doe\",\r\n  \"client_email\": \"jane@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/book/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"book",
+								""
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"Something went wrong\"\r\n}\r\n"
+				}
+			]
+		},
+		{
+			"name": "View Booking",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "View Booking Success(200)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/bookings?email=jane@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"",
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "jane@example.com"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date"
+						}
+					],
+					"body": "[\r\n    {\r\n        \"id\": 3,\r\n        \"fitness_class\": {\r\n            \"id\": 2,\r\n            \"datetime\": \"2025-06-04 22:13:57 IST\",\r\n            \"name\": \"Yoga\",\r\n            \"instructor\": \"Anita\",\r\n            \"total_slots\": 10,\r\n            \"available_slots\": 7\r\n        },\r\n        \"booked_at\": \"2025-06-03 16:19:15 IST\",\r\n        \"client_name\": \"Jane Doe\",\r\n        \"client_email\": \"jane@example.com\"\r\n    },\r\n    {\r\n        \"id\": 4,\r\n        \"fitness_class\": {\r\n            \"id\": 2,\r\n            \"datetime\": \"2025-06-04 22:13:57 IST\",\r\n            \"name\": \"Yoga\",\r\n            \"instructor\": \"Anita\",\r\n            \"total_slots\": 10,\r\n            \"available_slots\": 7\r\n        },\r\n        \"booked_at\": \"2025-06-03 16:24:08 IST\",\r\n        \"client_name\": \"Jane Doe\",\r\n        \"client_email\": \"jane@example.com\"\r\n    }\r\n]"
+				},
+				{
+					"name": "Missing email param - Error(400)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/bookings?email=",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"",
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": ""
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n  \"error\": \"Email required\"\r\n}\r\n"
+				}
+			]
+		}
+	]
+}
