@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
 
-
+#Get all classes
 @api_view(['GET'])
 def get_classes(request):
     try:
@@ -23,6 +23,8 @@ def get_classes(request):
         logger.error(f"Error fetching classes: {e}")
         return Response({'error': 'Unable to fetch classes'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+#Book a class
 @csrf_exempt
 @api_view(['POST'])
 def book_class(request):
@@ -35,6 +37,13 @@ def book_class(request):
 
     try:
         fitness_class = FitnessClass.objects.get(id=class_id)
+
+        # Check if the user already booked the class
+        if Booking.objects.filter(fitness_class=fitness_class, client_email=email).exists():
+            logger.info(f"Duplicate booking attempt by {email} for class ID: {class_id}")
+            return Response({'error': 'You have already booked this class.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
         if fitness_class.available_slots <= 0:
             logger.warning(f"No slots left for class ID: {class_id}")
             return Response({'error': 'No slots available'}, status=status.HTTP_400_BAD_REQUEST)
@@ -54,6 +63,8 @@ def book_class(request):
         return Response({'error': 'Something went wrong'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+#get booking
 @api_view(['GET'])
 def get_booking(request):
     email = request.query_params.get('email')

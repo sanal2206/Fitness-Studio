@@ -17,7 +17,7 @@ class FitnessClass(models.Model):
     def __str__(self):
         return f"{self.name}-{self.datetime}"
     
-
+#Booking class
 class Booking(models.Model):
     fitness_class=models.ForeignKey(FitnessClass,on_delete=models.CASCADE)
     client_name=models.CharField(max_length=100)
